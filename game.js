@@ -13,21 +13,21 @@
   };
 
   const GROUND_H = 80;
-  const GRAVITY = 0.42;
-  const FLAP_VELOCITY = -7.2;
+  const GRAVITY = 0.36;
+  const FLAP_VELOCITY = -6.8;
   const PIPE_WIDTH = 64;
 
-  const PIPE_SPEED_BASE = 2.0;
+  const PIPE_SPEED_BASE = 1.5;
   const PIPE_SPEED_MAX = 4.2;
-  const PIPE_SPEED_PER_POINT = 0.07;
+  const PIPE_SPEED_PER_POINT = 0.06;
 
-  const PIPE_INTERVAL_BASE = 2200;
+  const PIPE_INTERVAL_BASE = 2900;
   const PIPE_INTERVAL_MIN = 1100;
-  const PIPE_INTERVAL_PER_POINT = 35;
+  const PIPE_INTERVAL_PER_POINT = 40;
 
-  const PIPE_GAP_BASE = 200;
+  const PIPE_GAP_BASE = 260;
   const PIPE_GAP_MIN = 140;
-  const PIPE_GAP_PER_POINT = 1.8;
+  const PIPE_GAP_PER_POINT = 2.2;
 
   const pipeSpeed = () =>
     Math.min(PIPE_SPEED_MAX, PIPE_SPEED_BASE + score * PIPE_SPEED_PER_POINT);
