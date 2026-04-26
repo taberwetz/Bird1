@@ -13,12 +13,28 @@
   };
 
   const GROUND_H = 80;
-  const GRAVITY = 0.45;
-  const FLAP_VELOCITY = -7.5;
-  const PIPE_GAP = 150;
+  const GRAVITY = 0.42;
+  const FLAP_VELOCITY = -7.2;
   const PIPE_WIDTH = 64;
-  const PIPE_SPEED = 2.4;
-  const PIPE_INTERVAL = 1500;
+
+  const PIPE_SPEED_BASE = 2.0;
+  const PIPE_SPEED_MAX = 4.2;
+  const PIPE_SPEED_PER_POINT = 0.07;
+
+  const PIPE_INTERVAL_BASE = 2200;
+  const PIPE_INTERVAL_MIN = 1100;
+  const PIPE_INTERVAL_PER_POINT = 35;
+
+  const PIPE_GAP_BASE = 200;
+  const PIPE_GAP_MIN = 140;
+  const PIPE_GAP_PER_POINT = 1.8;
+
+  const pipeSpeed = () =>
+    Math.min(PIPE_SPEED_MAX, PIPE_SPEED_BASE + score * PIPE_SPEED_PER_POINT);
+  const pipeInterval = () =>
+    Math.max(PIPE_INTERVAL_MIN, PIPE_INTERVAL_BASE - score * PIPE_INTERVAL_PER_POINT);
+  const pipeGap = () =>
+    Math.max(PIPE_GAP_MIN, PIPE_GAP_BASE - score * PIPE_GAP_PER_POINT);
 
   const STATE = { READY: 0, PLAYING: 1, GAMEOVER: 2 };
 
@@ -63,7 +79,7 @@
   function flap() {
     if (state === STATE.READY) {
       state = STATE.PLAYING;
-      lastPipeTime = performance.now() - PIPE_INTERVAL + 600;
+      lastPipeTime = performance.now() - pipeInterval() + 600;
     }
     if (state === STATE.PLAYING) {
       penguin.vy = FLAP_VELOCITY;
@@ -74,19 +90,21 @@
   }
 
   function spawnPipe() {
+    const gap = pipeGap();
     const minTop = 50;
-    const maxTop = H - GROUND_H - PIPE_GAP - 50;
+    const maxTop = H - GROUND_H - gap - 50;
     const topH = Math.random() * (maxTop - minTop) + minTop;
     pipes.push({
       x: W + 10,
       topH,
-      bottomY: topH + PIPE_GAP,
+      bottomY: topH + gap,
       passed: false,
     });
   }
 
   function update(dt, now) {
-    groundOffset = (groundOffset + PIPE_SPEED) % 24;
+    const speed = pipeSpeed();
+    groundOffset = (groundOffset + speed) % 24;
 
     for (const f of snowflakes) {
       f.y += f.v;
@@ -110,13 +128,13 @@
       penguin.rotation = Math.max(-0.5, Math.min(1.2, penguin.vy / 12));
       penguin.flapPhase = Math.max(0, penguin.flapPhase - 0.08);
 
-      if (now - lastPipeTime > PIPE_INTERVAL) {
+      if (now - lastPipeTime > pipeInterval()) {
         spawnPipe();
         lastPipeTime = now;
       }
 
       for (const p of pipes) {
-        p.x -= PIPE_SPEED;
+        p.x -= speed;
         if (!p.passed && p.x + PIPE_WIDTH < penguin.x) {
           p.passed = true;
           score++;
