@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Flappy Penguin</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #000;
+    color: #fff;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    overflow: hidden;
+  }
+  #wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 12px;
+  }
+  canvas {
+    background: #fff;
+    border: 4px solid #ff7a00;
+    border-radius: 8px;
+    image-rendering: pixelated;
+    box-shadow: 0 0 24px rgba(255, 122, 0, 0.4);
+    touch-action: manipulation;
+  }
+  .hint {
+    color: #ff7a00;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+  <div id="wrap">
+    <canvas id="game" width="400" height="600"></canvas>
+    <div class="hint">Click / Tap / Space to flap</div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
